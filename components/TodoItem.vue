@@ -5,15 +5,20 @@ import { todoItemApi } from './data';
 const { todoId } = defineProps<
   { todoId: number; }>();
 
-const { data: content } = useAsyncData(
+// fetch a single todo item
+const { data: content, pending } = useAsyncData(
+  `${todoId}`,
   () => todoItemApi(todoId),
-  { server: false }
+  // works both on client and server
+  { server: true }
 );
 
 </script>
 
 <template>
   <div class="title">
-    {{ content }}
+    <span>{{ todoId }}:</span>
+    <code v-if="pending">loading...</code>
+    <code v-else>{{ content }}</code>
   </div>
 </template> 
