@@ -17,8 +17,9 @@ export interface Todo {
  * @returns A function that accepts one `todoId` and returns a `Promise` that resolves to a `Todo`.
  */
 export const todoItemApi = createPBatch((todoIds: number[]) => {
-  const url = new URL("https://jsonplaceholder.typicode.com/todos");
-  todoIds.forEach((id) => url.searchParams.append("id", id.toString()));
-
-  return fetch(url).then((res) => res.json() as Promise<Todo[]>);
+  return $fetch<Todo[]>("https://jsonplaceholder.typicode.com/todos", {
+    params: {
+      id: todoIds,
+    },
+  });
 });
